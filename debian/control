@@ -1,0 +1,15 @@
+Source: servicemanager
+Section: misc
+Priority: optional
+Maintainer: Frederic Guilbault <2@0464.ca>
+Uploaders: Frederic Guilbault <2@0464.ca>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 4.4.1
+Homepage: http://lysmarineOS.com
+
+Package: servicemanager
+Architecture: all
+Depends: zenity, ssh-askpass-gnome, ${shlibs:Depends}, ${misc:Depends}
+Description: lysmarine service manager
+ This package provides service files and GUI to manage optional services
+
