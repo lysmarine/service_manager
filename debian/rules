@@ -12,21 +12,25 @@ export DH_VERBOSE=1
 	dh $@
 
 override_dh_auto_install:
-	install -d $$(pwd)/debian/servicemanager/usr/share/applications
-	install -d $$(pwd)/debian/servicemanager/usr/bin
+
 	install -d $$(pwd)/debian/servicemanager/etc/systemd/system/
+	install -d $$(pwd)/debian/servicemanager/usr/share/applications/
+	install -d $$(pwd)/debian/servicemanager/usr/bin/
 	install -m 755 ./servicedialog $$(pwd)/debian/servicemanager/usr/bin/
 	install -m 644 ./servicedialog.desktop $$(pwd)/debian/servicemanager/usr/share/applications/
-	# gpsd
+
+	install -m 0644 ./startx.service ./debian/
+	install -m 0644 ./signalk.service $$(pwd)/debian/
+	install -m 0644 ./signalk.socket $$(pwd)/debian/
+	install -m 0644 ./speedsample.service  $$(pwd)/debian/
+	install -m 0644 ./pypilot_web.service $$(pwd)/debian/
+	install -m 0644 ./pypilot_web.socket $$(pwd)/debian/
+
 	install -m 0644 ./lysgpsd@.service  $$(pwd)/debian/servicemanager/etc/systemd/system/lysgpsd@.service
-	# pypilot
 	install -m 0644 ./pypilot@.service $$(pwd)/debian/servicemanager/etc/systemd/system/
-	install -m 0644 ./pypilot_web.service $$(pwd)/debian/servicemanager/etc/systemd/system/
-	install -m 0644 ./pypilot_web.socket $$(pwd)/debian/servicemanager/etc/systemd/system/
-	# signalk
-	install -m 0644 ./signalk.service $$(pwd)/debian/servicemanager/etc/systemd/system/
-	install -m 0644 ./signalk.socket $$(pwd)/debian/servicemanager/etc/systemd/system/
-	# speedSample
-	install -m 644 ./speedsample.service  $$(pwd)/debian/servicemanager/etc/systemd/system/
-	#startx
-	install -m 644 ./startx.service $$(pwd)/debian/servicemanager/etc/systemd/system/
+
+override_dh_installsystemd:
+	dh_installsystemd --name=startx
+	dh_installsystemd --name=signalk
+	dh_installsystemd --name=speedsample
+	dh_installsystemd --name=pypilot_web

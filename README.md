@@ -3,9 +3,9 @@ service_manager is a component of lysmarine that is responsible to provide adapt
 
 ## deployment
 ```
-git clone --depth 1 https://github.com/lysmarine/service_manager/
+git clone https://github.com/lysmarine/service_manager/
 debuild -S
-dput ppa:lysmarine/lysmarine ../createap_*-ppa2_source.changes 
+dput ppa:lysmarine/ppa ../servicemanager_*_source.changes 
 ```
 
 ##local build

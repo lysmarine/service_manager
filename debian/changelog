@@ -1,4 +1,10 @@
-servicemanager (0.0.0-1) focal; urgency=low
+servicemanager (1.1.0) focal; urgency=low
+
+  * use debhelper to manage services.
+
+ -- Frederic Guilbault <2@0464.ca>  Sun, 20 dec 2020 00:00:00 +0000
+
+servicemanager (1.0.0) focal; urgency=low
 
   * Initial release.
 

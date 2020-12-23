@@ -3,8 +3,8 @@ Section: misc
 Priority: optional
 Maintainer: Frederic Guilbault <2@0464.ca>
 Uploaders: Frederic Guilbault <2@0464.ca>
-Build-Depends: debhelper (>= 10)
-Standards-Version: 4.4.1
+Build-Depends: debhelper (>= 11)
+Standards-Version: 4.5.0
 Homepage: http://lysmarineOS.com
 
 Package: servicemanager
