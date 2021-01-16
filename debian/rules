@@ -25,7 +25,7 @@ override_dh_auto_install:
 	install -m 0644 ./speedsample.service  $$(pwd)/debian/
 	install -m 0644 ./pypilot_web.service $$(pwd)/debian/
 	install -m 0644 ./pypilot_web.socket $$(pwd)/debian/
-
+	install -m 0644 ./vnc.service $$(pwd)/debian/
 	install -m 0644 ./lysgpsd@.service  $$(pwd)/debian/servicemanager/etc/systemd/system/lysgpsd@.service
 	install -m 0644 ./pypilot@.service $$(pwd)/debian/servicemanager/etc/systemd/system/
 
@@ -34,3 +34,4 @@ override_dh_installsystemd:
 	dh_installsystemd --name=signalk
 	dh_installsystemd --name=speedsample
 	dh_installsystemd --name=pypilot_web
+	dh_installsystemd --name=vnc

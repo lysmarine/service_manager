@@ -1,3 +1,10 @@
+servicemanager (2.1.0) focal; urgency=low
+
+  * Make startx restart on fail.
+  * Add entry for vnc.
+
+ -- Frederic Guilbault <2@0464.ca>  Sun, 16 jan 2021 00:00:00 +0000
+
 servicemanager (2.0.0) focal; urgency=low
 
   * switch to yad.
