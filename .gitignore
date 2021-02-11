@@ -1,2 +1,7 @@
-debian/*.service
-debian/*.socket
+/*/debian/*.service
+/*/debian/*.socket
+debhelper-build-stamp
+files
+*.log
+*.debhelper
+*.substvars

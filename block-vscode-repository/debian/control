@@ -1,0 +1,14 @@
+Source: block-vscode-repository
+Section: misc
+Priority: optional
+Maintainer: Frederic Guilbault <2@0464.ca>
+Uploaders: Frederic Guilbault <2@0464.ca>
+Build-Depends: debhelper (>= 11)
+Standards-Version: 4.5.0
+Homepage: http://lysmarineOS.com
+
+Package: block-vscode-repository
+Architecture: all
+Depends:
+Description: Prevent the injection of microsoft vscode repository from the package raspberrypi-sys-mods
+

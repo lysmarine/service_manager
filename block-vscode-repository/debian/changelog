@@ -1,0 +1,5 @@
+block-vscode-repository (1.0.0) focal; urgency=high
+
+  * Initial publishing
+
+ -- Frederic Guilbault <2@0464.ca>  Sun, 05 feb 2021 00:00:00 +0000
