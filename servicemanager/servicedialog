@@ -6,9 +6,6 @@ ROWS=""
 $(systemctl -q is-enabled NetworkManager) && STATUS=TRUE || STATUS=FALSE
 ROWS="$ROWS $STATUS NetworkManager"
 
-$(systemctl -q is-enabled create_ap) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS create_ap"
-
 $(systemctl -q is-enabled ssh) && STATUS=TRUE || STATUS=FALSE
 ROWS="$ROWS $STATUS SSH"
 
@@ -30,11 +27,8 @@ ROWS="$ROWS $STATUS signal-K"
 $(systemctl -q is-enabled vnc) && STATUS=TRUE || STATUS=FALSE
 ROWS="$ROWS $STATUS VNC"
 
-$(systemctl -q is-enabled xrdp) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS RDP"
-
-$(systemctl -q is-enabled avnav) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS avnav"
+#$(systemctl -q is-enabled avnav) && STATUS=TRUE || STATUS=FALSE
+#ROWS="$ROWS $STATUS avnav"
 
 $(systemctl -q is-enabled mopidy) && STATUS=TRUE || STATUS=FALSE
 ROWS="$ROWS $STATUS mopidy"
@@ -97,12 +91,14 @@ else
 
   if echo "$SAVE" | grep -q "PyPilot_web"; then
     echo "=== enable PyPilot_web ==="
+    sudo -A systemctl unmask pypilot_web
     sudo -A systemctl enable pypilot_web
     sudo -A systemctl start pypilot_web
   else
     echo "=== disable PyPilot_web ==="
     sudo -A systemctl disable pypilot_web
     sudo -A systemctl stop pypilot_web
+    sudo -A systemctl mask pypilot_web
   fi
 
   if echo "$SAVE" | grep -q "rtl-ais"; then
@@ -127,12 +123,14 @@ else
 
   if echo "$SAVE" | grep -q "VNC"; then
     echo "=== enable vnc ==="
+    sudo -A systemctl unmask vnc
     sudo -A systemctl enable vnc
     sudo -A systemctl start vnc
   else
     echo "=== disable vnc ==="
     sudo -A systemctl disable vnc
     sudo -A systemctl stop vnc
+  	sudo -A systemctl mask vnc
   fi
 
   if echo "$SAVE" | grep -q "RDP"; then

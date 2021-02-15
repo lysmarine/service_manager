@@ -1,14 +1,12 @@
 [Unit]
 Description=VNC Server for X11
-Requires=graphical.target
-After=startx.target
+After=startx.target graphical.target network.target
 
 [Service]
 Type=simple
 User=user
-ExecStart=/usr/bin/x11vnc -auth guess -forever -overlay_nocursor -noxdamage -rfbauth /home/user/.vnc/passwd -rfbport 5900
-Restart=on-failure
-RestartSec=10
+ExecStart=/usr/bin/x11vnc /home/user/.vnc/passwd -mdns -auth guess -ncache 10 -forever -display :0 -noxdamage -rfbport 5900
+ExecStartPost=/usr/bin/waitport 127.0.0.1 5900
 
 [Install]
 WantedBy=graphical.target

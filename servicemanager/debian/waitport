@@ -1,0 +1,17 @@
+#!/bin/bash
+
+host=$1
+port=$2
+tries=15
+
+for i in `seq $tries`; do
+    if /usr/bin/nc $host $port > /dev/null ; then
+        # Ready
+        exit 0
+    fi
+
+    /bin/sleep 1
+done
+
+# FAIL
+exit -1
