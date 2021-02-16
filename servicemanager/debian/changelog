@@ -1,9 +1,15 @@
+servicemanager (2.2.1) focal; urgency=low
+
+  * Add netcat dependency for waitport
+
+ -- Frederic Guilbault <2@0464.ca>  16 jan 2021 00:00:00 +0000
+
 servicemanager (2.2.0) focal; urgency=low
 
   * Add vnc socket.
   * Mask pypilot on disable to prevent socket start.
 
- -- Frederic Guilbault <2@0464.ca>  Sun, 15 jan 2021 00:00:00 +0000
+ -- Frederic Guilbault <2@0464.ca>  15 jan 2021 00:00:00 +0000
 
 servicemanager (2.1.0) focal; urgency=low
 
