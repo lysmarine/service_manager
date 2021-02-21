@@ -18,7 +18,6 @@ override_dh_auto_install:
 	install -d $$(pwd)/debian/servicemanager/usr/bin/
 	install -m 755 ./servicedialog $$(pwd)/debian/servicemanager/usr/bin/
 	install -m 644 ./servicedialog.desktop $$(pwd)/debian/servicemanager/usr/share/applications/
-	install -m 755 ./waitport $$(pwd)/debian/servicemanager/usr/bin/
 
 	install -m 0644 ./startx.service ./debian/
 	install -m 0644 ./signalk.service $$(pwd)/debian/

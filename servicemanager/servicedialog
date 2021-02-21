@@ -1,166 +1,164 @@
-#!/bin/bash -e
+#!/bin/bash
 
-ROWS=""
+ori_mopidy=$(systemctl -q is-enabled mopidy && echo TRUE || echo FALSE )
+ori_vnc=$(systemctl -q is-enabled vnc && echo TRUE || echo FALSE )
+ori_signalk=$(systemctl -q is-enabled signalk && echo TRUE || echo FALSE )
+ori_pypilot_web=$(systemctl -q is-enabled pypilot_web && echo TRUE || echo FALSE )
+ori_pypilot=$(systemctl -q is-enabled pypilot@pypilot.service && echo TRUE || echo FALSE )
+ori_kplex=$(systemctl -q is-enabled kplex && echo TRUE || echo FALSE )
+ori_ssh=$(systemctl -q is-enabled ssh && echo TRUE || echo FALS E)
+ori_NetworkManager=$(systemctl -q is-enabled NetworkManager && echo TRUE || echo FALSE )
+#ori_rtl-ais=$(systemctl -q is-enabled rtl-ais) && STATUS=TRUE || STATUS=FALSE
+#ori_avnav=$(systemctl -q is-enabled avnav) && STATUS=TRUE || STATUS=FALSE
 
-## List services and their status
-$(systemctl -q is-enabled NetworkManager) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS NetworkManager"
-
-$(systemctl -q is-enabled ssh) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS SSH"
-
-$(systemctl -q is-enabled kplex) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS kplex"
-
-$(systemctl -q is-enabled pypilot@pypilot.service) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS PyPilot"
-
-$(systemctl -q is-enabled pypilot_web) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS PyPilot_web"
-
-$(systemctl -q is-enabled rtl-ais) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS rtl-ais"
-
-$(systemctl -q is-enabled signalk) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS signal-K"
-
-$(systemctl -q is-enabled vnc) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS VNC"
-
-#$(systemctl -q is-enabled avnav) && STATUS=TRUE || STATUS=FALSE
-#ROWS="$ROWS $STATUS avnav"
-
-$(systemctl -q is-enabled mopidy) && STATUS=TRUE || STATUS=FALSE
-ROWS="$ROWS $STATUS mopidy"
+export SUDO_ASKPASS="/usr/bin/ssh-askpass"
+export ARGUMENTS=" $ori_mopidy Mopidy $ori_vnc VNC $ori_signalk SignalK $ori_pypilot PyPilot $ori_pypilot_web PyPilot_web $ori_kplex Kplex $ori_ssh SSH $ori_NetworkManager NetworkManager "
 
 ## Dialog
-SAVE=$(yad --list \
+SAVE=$( yad --list \
   --height=400 \
+  --title="Lysmarine service manager" \
   --text="Lysmarine has multiple services available. Enable and disable them based on what you need." \
   --column="Enable" \
   --column="Service" \
   --checklist \
-  $ROWS)
+  $ARGUMENTS )
 
-## Quit if cancell button have been pressed
+## Quit if cancel button have been pressed
 if [ "$?" == 1 ]; then
   echo cancel
   exit 0
+fi
+
+
+#### Work ####
+if echo "$SAVE" | grep -q "NetworkManager"; then
+	if [[ "$ori_NetworkManager" == "FALSE" ]]; then
+		echo "=== enable NetworkManager ==="
+		sudo -A systemctl enable NetworkManager
+		sudo -A systemctl start NetworkManager
+	fi
 else
-  export SUDO_ASKPASS="/usr/bin/ssh-askpass"
-  ## Take action
-  if echo "$SAVE" | grep -q "NetworkManager"; then
-    echo "=== enable NetworkManager ==="
-    sudo -A systemctl enable NetworkManager
-    sudo -A systemctl start NetworkManager
-  else
-    echo "=== disable NetworkManager ==="
-    sudo -A systemctl disable NetworkManager
-    sudo -A systemctl stop NetworkManager
-  fi
+	if [[ "$ori_NetworkManager" == "TRUE" ]]; then
+	    echo "=== disable NetworkManager ==="
+  		sudo -A systemctl disable NetworkManager
+  		sudo -A systemctl stop NetworkManager
+	fi
+fi
 
-  if echo "$SAVE" | grep -q "SSH"; then
-    echo "=== enable SSH ==="
-    sudo -A systemctl enable ssh
-    sudo -A systemctl start ssh
-  else
-    echo "=== disable SSH ==="
-    sudo -A systemctl disable ssh
-    sudo -A systemctl stop ssh
-  fi
+#### Ssh ####
+if echo "$SAVE" | grep -q "SSH"; then
+	if [[ "$ori_ssh" == "FALSE" ]]; then
+		echo "=== enable ssh ==="
+		sudo -A systemctl enable ssh
+		sudo -A systemctl start ssh
+	fi
+else
+	if [[ "$ori_ssh" == "TRUE" ]]; then
+	    echo "=== disable ssh ==="
+  		sudo -A systemctl disable ssh
+  		sudo -A systemctl stop ssh
+	fi
+fi
 
-  if echo "$SAVE" | grep -q "kplex"; then
-    echo "=== enable kplex ==="
-    sudo -A systemctl enable kplex
-    sudo -A systemctl start kplex
-  else
-    echo "=== disable kplex ==="
-    sudo -A systemctl disable kplex
-    sudo -A systemctl stop kplex
-  fi
+#### Kplex ####
+if echo "$SAVE" | grep -q "Kplex"; then
+	if [[ "$ori_kplex" == "FALSE" ]]; then
+		echo "=== enable kplex ==="
+  		sudo -A systemctl enable kplex
+  		sudo -A systemctl start kplex
+	fi
+else
+	if [[ "$ori_kplex" == "TRUE" ]]; then
+	    echo "=== disable kplex ==="
+  		sudo -A systemctl disable kplex
+  		sudo -A systemctl stop kplex
+  	fi
+fi
 
-  if echo "$SAVE" | grep -q "PyPilot"; then
-    echo "=== enable PyPilot ==="
-    sudo -A systemctl enable pypilot@pypilot.service
-    sudo -A systemctl start pypilot@pypilot.service
-  else
-    echo "=== disable PyPilot ==="
-    sudo -A systemctl disable pypilot@pypilot.service
-    sudo -A systemctl stop pypilot@pypilot.service
-  fi
+#### PyPilot ####
+if echo "$SAVE" | grep -q "PyPilot"; then
+	if [[ "$ori_pypilot" == "FALSE" ]]; then
+		echo "=== enable pypilot ==="
+	    sudo -A systemctl enable pypilot@pypilot.service
+  		sudo -A systemctl start pypilot@pypilot.service
+  		rm /home/user/.local/share/applications/pypilot_calibration.desktop
+  	fi
+else
+	if [[ "$ori_pypilot" == "TRUE" ]]; then
+	    echo "=== disable pypilot ==="
+   		sudo -A systemctl disable pypilot@pypilot.service
+  		sudo -A systemctl stop pypilot@pypilot.service
+  		echo "Hidden=true" > /home/user/.local/share/applications/pypilot_calibration.desktop
+  	fi
+fi
 
-  if echo "$SAVE" | grep -q "PyPilot_web"; then
-    echo "=== enable PyPilot_web ==="
-    sudo -A systemctl unmask pypilot_web
-    sudo -A systemctl enable pypilot_web
-    sudo -A systemctl start pypilot_web
-  else
-    echo "=== disable PyPilot_web ==="
-    sudo -A systemctl disable pypilot_web
-    sudo -A systemctl stop pypilot_web
-    sudo -A systemctl mask pypilot_web
-  fi
+#### PyPilot_web ####
+if echo "$SAVE" | grep -q "PyPilot_web"; then
+	if [[ "$ori_pypilot_web" == "FALSE" ]]; then
+		echo "=== enable PyPilot_web ==="
+   		sudo -A systemctl unmask pypilot_web
+  		sudo -A systemctl enable pypilot_web
+  		sudo -A systemctl start  pypilot_web
+  		rm /home/user/.local/share/applications/pypilot_webapp.desktop
+  	fi
+else
+	if [[ "$ori_pypilot_web" == "TRUE" ]]; then
+	    echo "=== disable PyPilot_web ==="
+   		sudo -A systemctl disable pypilot_web
+  		sudo -A systemctl stop pypilot_web
+  		sudo -A systemctl mask pypilot_web
+  		echo "Hidden=true" > /home/user/.local/share/applications/pypilot_webapp.desktop
+  	fi
+fi
 
-  if echo "$SAVE" | grep -q "rtl-ais"; then
-    echo "=== enable rtl-ais ==="
-    sudo -A systemctl enable rtl-ais
-    sudo -A systemctl start rtl-ais
-  else
-    echo "=== disable rtl-ais ==="
-    sudo -A systemctl disable rtl-ais
-    sudo -A systemctl stop rtl-ais
-  fi
+#### SignalK ####
+if echo "$SAVE" | grep -q "SignalK"; then
+	if [[ "$ori_signalk" == "FALSE" ]]; then
+		echo "=== enable SignalK ==="
+   		sudo -A systemctl enable signalk
+		sudo -A systemctl start signalk
+        rm /home/user/.local/share/applications/signalk.desktop
+  	fi
+else
+	if [[ "$ori_signalk" == "TRUE" ]]; then
+	    echo "=== disable SignalK ==="
+   		sudo -A systemctl disable signalk
+        sudo -A systemctl stop signalk
+		echo "Hidden=true" > /home/user/.local/share/applications/signalk.desktop
+  	fi
+fi
 
-  if echo "$SAVE" | grep -q "signal-K"; then
-    echo "=== enable signalk ==="
-    sudo -A systemctl enable signalk
-    sudo -A systemctl start signalk
-  else
-    echo "=== disable signalk ==="
-    sudo -A systemctl disable signalk
-    sudo -A systemctl stop signalk
-  fi
+#### VNC ####
+if echo "$SAVE" | grep -q "VNC"; then
+	if [[ "$ori_vnc" == "FALSE" ]]; then
+		echo "=== enable vnc ==="
+		sudo -A systemctl unmask vnc
+		sudo -A systemctl enable vnc
+		sudo -A systemctl start vnc
+  	fi
+else
+	if [[ "$ori_vnc" == "TRUE" ]]; then
+		echo "=== disable vnc ==="
+		sudo -A systemctl disable vnc
+		sudo -A systemctl stop vnc
+		sudo -A systemctl mask vnc
+  	fi
+fi
 
-  if echo "$SAVE" | grep -q "VNC"; then
-    echo "=== enable vnc ==="
-    sudo -A systemctl unmask vnc
-    sudo -A systemctl enable vnc
-    sudo -A systemctl start vnc
-  else
-    echo "=== disable vnc ==="
-    sudo -A systemctl disable vnc
-    sudo -A systemctl stop vnc
-  	sudo -A systemctl mask vnc
-  fi
-
-  if echo "$SAVE" | grep -q "RDP"; then
-    echo "=== enable xrdp ==="
-    sudo -A systemctl enable xrdp
-    sudo -A systemctl start xrdp
-  else
-    echo "=== disable xrdp ==="
-    sudo -A systemctl disable xrdp
-    sudo -A systemctl stop xrdp
-  fi
-
-#  if echo "$SAVE" | grep -q "avnav"; then
-#    echo "=== enable avnav ==="
-#    sudo -A systemctl enable avnav
-#    sudo -A systemctl start avnav
-#  else
-#    echo "=== disable avnav ==="
-#    sudo -A systemctl disable avnav
-#    sudo -A systemctl stop avnav
-#  fi
-
-  if echo "$SAVE" | grep -q "mopidy"; then
-    echo "=== enable mopidy ==="
-    sudo -A systemctl enable mopidy
-    sudo -A systemctl start mopidy
-  else
-    echo "=== disable mopidy ==="
-    sudo -A systemctl disable mopidy
-    sudo -A systemctl stop mopidy
-  fi
-
+#### mopidy ####
+if echo "$SAVE" | grep -q "Mopidy"; then
+	if [[ "$ori_mopidy" == "FALSE" ]]; then
+	  echo "=== enable mopidy ==="
+	  sudo -A systemctl enable mopidy
+	  sudo -A systemctl start mopidy
+	  rm /home/user/.local/share/applications/musicbox.desktop
+	fi
+else
+	if [[ "$ori_mopidy" == "TRUE" ]]; then
+		echo "=== disable mopidy ==="
+		sudo -A systemctl disable mopidy
+		sudo -A systemctl stop mopidy
+		echo "Hidden=true" > /home/user/.local/share/applications/musicbox.desktop
+  	fi
 fi

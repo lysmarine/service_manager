@@ -1,0 +1,29 @@
+#!/bin/sh
+
+case "$1" in
+    install)
+        sudo -A systemctl enable ssh
+        sudo -A systemctl disable kplex
+        sudo -A systemctl disable pypilot@pypilot.service
+  		sudo -A systemctl disable pypilot_web
+  		sudo -A systemctl mask pypilot_web
+  		echo "Hidden=true" > /home/user/.local/share/applications/pypilot_webapp.desktop
+		sudo -A systemctl enable signalk
+		sudo -A systemctl disable vnc
+		sudo -A systemctl mask vnc
+		sudo -A systemctl disable mopidy
+		echo "Hidden=true" > /home/user/.local/share/applications/musicbox.desktop
+        ;;
+
+    upgrade|abort-upgrade)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0

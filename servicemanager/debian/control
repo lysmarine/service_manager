@@ -9,7 +9,7 @@ Homepage: http://lysmarineOS.com
 
 Package: servicemanager
 Architecture: all
-Depends: yad, ssh-askpass-gnome, netcat, ${shlibs:Depends}, ${misc:Depends}
+Depends: yad, ssh-askpass-gnome, ${shlibs:Depends}, ${misc:Depends}
 Description: lysmarine service manager
  This package provides service files and GUI to manage optional services
 

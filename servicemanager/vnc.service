@@ -5,8 +5,9 @@ After=startx.target graphical.target network.target
 [Service]
 Type=simple
 User=user
-ExecStart=/usr/bin/x11vnc /home/user/.vnc/passwd -mdns -auth guess -ncache 10 -forever -display :0 -noxdamage -rfbport 5900
-ExecStartPost=/usr/bin/waitport 127.0.0.1 5900
+ExecStart=/usr/bin/x11vnc -rfbauth /home/user/.vnc/passwd -mdns -auth guess -ncache 10 -forever -display :0 -noxdamage -rfbport 5900
+RestartSec=3
+Restart=on-failure
 
 [Install]
 WantedBy=graphical.target

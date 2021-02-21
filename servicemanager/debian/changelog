@@ -1,3 +1,13 @@
+servicemanager (2.3.0) focal; urgency=low
+
+  * revert waitport
+  * Avoid starting or stoping process that are already started/stoped
+  * Hide .desktop entries for deactivated services
+  * Add window title
+  * Set default position in postinst
+
+ -- Frederic Guilbault <2@0464.ca>  17 feb 2021 00:00:00 +0000
+
 servicemanager (2.2.1) focal; urgency=low
 
   * Add netcat dependency for waitport
