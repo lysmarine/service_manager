@@ -1,29 +1,29 @@
 #!/bin/sh
-
-case "$1" in
-    install)
-        sudo -A systemctl enable ssh
-        sudo -A systemctl disable kplex
-        sudo -A systemctl disable pypilot@pypilot.service
-  		sudo -A systemctl disable pypilot_web
-  		sudo -A systemctl mask pypilot_web
-  		echo "Hidden=true" > /home/user/.local/share/applications/pypilot_webapp.desktop
-		sudo -A systemctl enable signalk
-		sudo -A systemctl disable vnc
-		sudo -A systemctl mask vnc
-		sudo -A systemctl disable mopidy
-		echo "Hidden=true" > /home/user/.local/share/applications/musicbox.desktop
-        ;;
-
-    upgrade|abort-upgrade)
-        ;;
-
-    *)
-        echo "postinst called with unknown argument \`$1'" >&2
-        exit 0
-        ;;
-esac
-
 #DEBHELPER#
+
+if [ -z "$2" ]; then
+	systemctl enable ssh
+	systemctl disable kplex
+	systemctl disable pypilot@pypilot.service
+	systemctl disable pypilot_web
+	systemctl mask pypilot_web
+	systemctl enable signalk
+	systemctl disable vnc
+	systemctl mask vnc
+	systemctl disable mopidy
+	mkdir -p /home/user/.local/share/applications
+	chown 1000:1000  /home/user/.local/share/applications
+	cp /usr/local/share/applications/pypilot_calibration.desktop /home/user/.local/share/applications/pypilot_calibration.desktop
+	cp /usr/local/share/applications/pypilot_webapp.desktop /home/user/.local/share/applications/pypilot_webapp.desktop
+	 cp /usr/local/share/applications/signalk.desktop /home/user/.local/share/applications/signalk.desktop
+	echo "Hidden=true" >> /home/user/.local/share/applications/musicbox.desktop
+	echo "Hidden=true" >> /home/user/.local/share/applications/pypilot_webapp.desktop
+	echo "Hidden=true" >> /home/user/.local/share/applications/pypilot_calibration.desktop
+	chown 1000:1000 /home/user/.local/share/applications/musicbox.desktop
+	chown 1000:1000 /home/user/.local/share/applications/pypilot_webapp.desktop
+	chown 1000:1000 /home/user/.local/share/applications/pypilot_calibration.desktop
+	echo "First install setup done."
+fi
+
 
 exit 0

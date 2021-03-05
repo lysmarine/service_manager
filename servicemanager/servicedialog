@@ -82,14 +82,15 @@ if echo "$SAVE" | grep -q "PyPilot"; then
 		echo "=== enable pypilot ==="
 	    sudo -A systemctl enable pypilot@pypilot.service
   		sudo -A systemctl start pypilot@pypilot.service
-  		rm /home/user/.local/share/applications/pypilot_calibration.desktop
+  		rm /$HOME/.local/share/applications/pypilot_calibration.desktop
   	fi
 else
 	if [[ "$ori_pypilot" == "TRUE" ]]; then
 	    echo "=== disable pypilot ==="
    		sudo -A systemctl disable pypilot@pypilot.service
   		sudo -A systemctl stop pypilot@pypilot.service
-  		echo "Hidden=true" > /home/user/.local/share/applications/pypilot_calibration.desktop
+  		cp /usr/local/share/applications/pypilot_calibration.desktop $HOME/.local/share/applications/pypilot_calibration.desktop
+  		echo "Hidden=true" >> $HOME/.local/share/applications/pypilot_calibration.desktop
   	fi
 fi
 
@@ -100,7 +101,7 @@ if echo "$SAVE" | grep -q "PyPilot_web"; then
    		sudo -A systemctl unmask pypilot_web
   		sudo -A systemctl enable pypilot_web
   		sudo -A systemctl start  pypilot_web
-  		rm /home/user/.local/share/applications/pypilot_webapp.desktop
+  		rm $HOME/.local/share/applications/pypilot_webapp.desktop
   	fi
 else
 	if [[ "$ori_pypilot_web" == "TRUE" ]]; then
@@ -108,7 +109,8 @@ else
    		sudo -A systemctl disable pypilot_web
   		sudo -A systemctl stop pypilot_web
   		sudo -A systemctl mask pypilot_web
-  		echo "Hidden=true" > /home/user/.local/share/applications/pypilot_webapp.desktop
+  		cp /usr/local/share/applications/pypilot_webapp.desktop $HOME/.local/share/applications/pypilot_webapp.desktop
+  		echo "Hidden=true" >> $HOME/.local/share/applications/pypilot_webapp.desktop
   	fi
 fi
 
@@ -118,14 +120,15 @@ if echo "$SAVE" | grep -q "SignalK"; then
 		echo "=== enable SignalK ==="
    		sudo -A systemctl enable signalk
 		sudo -A systemctl start signalk
-        rm /home/user/.local/share/applications/signalk.desktop
+        rm $HOME/.local/share/applications/signalk.desktop
   	fi
 else
 	if [[ "$ori_signalk" == "TRUE" ]]; then
 	    echo "=== disable SignalK ==="
    		sudo -A systemctl disable signalk
         sudo -A systemctl stop signalk
-		echo "Hidden=true" > /home/user/.local/share/applications/signalk.desktop
+        cp /usr/local/share/applications/signalk.desktop $HOME/.local/share/applications/signalk.desktop
+		echo "Hidden=true" >> $HOME/.local/share/applications/signalk.desktop
   	fi
 fi
 
@@ -152,13 +155,14 @@ if echo "$SAVE" | grep -q "Mopidy"; then
 	  echo "=== enable mopidy ==="
 	  sudo -A systemctl enable mopidy
 	  sudo -A systemctl start mopidy
-	  rm /home/user/.local/share/applications/musicbox.desktop
+	  rm $HOME/.local/share/applications/musicbox.desktop
 	fi
 else
 	if [[ "$ori_mopidy" == "TRUE" ]]; then
 		echo "=== disable mopidy ==="
 		sudo -A systemctl disable mopidy
 		sudo -A systemctl stop mopidy
-		echo "Hidden=true" > /home/user/.local/share/applications/musicbox.desktop
+		cp /usr/local/share/applications/musicbox.desktop $HOME/.local/share/applications/musicbox.desktop
+		echo "Hidden=true" >> $HOME/.local/share/applications/musicbox.desktop
   	fi
 fi
