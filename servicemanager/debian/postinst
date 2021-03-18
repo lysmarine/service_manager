@@ -11,14 +11,22 @@ if [ -z "$2" ]; then
 	systemctl disable vnc
 	systemctl mask vnc
 	systemctl disable mopidy
+
 	mkdir -p /home/user/.local/share/applications
 	chown 1000:1000  /home/user/.local/share/applications
+
 	cp /usr/local/share/applications/pypilot_calibration.desktop /home/user/.local/share/applications/pypilot_calibration.desktop
 	cp /usr/local/share/applications/pypilot_webapp.desktop /home/user/.local/share/applications/pypilot_webapp.desktop
-	 cp /usr/local/share/applications/signalk.desktop /home/user/.local/share/applications/signalk.desktop
+	cp /usr/local/share/applications/signalk.desktop /home/user/.local/share/applications/signalk.desktop
+	cp /usr/local/share/applications/musicbox.desktop /home/user/.local/share/applications/musicbox.desktop
+
 	echo "Hidden=true" >> /home/user/.local/share/applications/musicbox.desktop
 	echo "Hidden=true" >> /home/user/.local/share/applications/pypilot_webapp.desktop
 	echo "Hidden=true" >> /home/user/.local/share/applications/pypilot_calibration.desktop
+	echo "Hidden=true" >> /home/user/.local/share/applications/signalk.desktop
+
+
+
 	chown 1000:1000 /home/user/.local/share/applications/musicbox.desktop
 	chown 1000:1000 /home/user/.local/share/applications/pypilot_webapp.desktop
 	chown 1000:1000 /home/user/.local/share/applications/pypilot_calibration.desktop

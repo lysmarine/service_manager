@@ -1,3 +1,15 @@
+servicemanager (2.3.6) focal; urgency=low
+
+  * Fix default status of musicbox desktop file
+
+ -- Frederic Guilbault <2@0464.ca>  16 mar 2021 00:00:00 +0000
+
+servicemanager (2.3.5) focal; urgency=low
+
+  * Add signalk socket file to allow opening of port 80
+
+ -- Frederic Guilbault <2@0464.ca>  12 mar 2021 00:00:00 +0000
+
 servicemanager (2.3.4) focal; urgency=low
 
   * fix overwrite of .desktop file when adding Hidden=true in postinst
